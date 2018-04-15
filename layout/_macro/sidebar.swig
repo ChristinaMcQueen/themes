@@ -90,9 +90,7 @@
                   {% if theme.social_icons.enable %}
                     <i class="fa fa-fw fa-{{ theme.social_icons[name] | default('globe') | lower }}"></i>
                   {% endif %}
-                    {% if not theme.social_icons.icons_only %}
-                      {{ name }}
-                    {% endif %}
+                  {{ name }}
                 </a>
               </span>
             {% endfor %}

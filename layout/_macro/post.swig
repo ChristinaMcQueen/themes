@@ -3,18 +3,12 @@
   {% set headlessPost = Array.prototype.indexOf.call(['quote', 'picture'], post.type) > -1 %}
 
   {% set post_class = 'post post-type-' + post.type | default('normal') %}
-  {% if post_extra_class > 0 %}
-    {% set post_class = post_class + ' ' + post_extra_class | default('') %}
-  {% endif %}
+  {% set post_class = post_class + ' ' + post_extra_class | default('') %}
   {% if post.sticky > 0 %}
     {% set post_class = post_class + ' ' + 'post-sticky' %}
   {% endif %}
 
   <article class="{{ post_class }}" itemscope itemtype="http://schema.org/Article">
-  {##################}
-  {### POST BLOCK ###}
-  {##################}
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="{{ config.url }}{{ url_for(post.path) }}">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -32,7 +26,7 @@
 
         {# Not to show title for quote posts that do not have a title #}
         {% if not (is_index and post.type === 'quote' and not post.title) %}
-          <{% if theme.seo %}h2{% else %}h1{% endif %} class="post-title{% if post.direction && post.direction.toLowerCase() === 'rtl' %} rtl{% endif %}" itemprop="name headline">{#
+          <{% if theme.seo %}h2{% else %}h1{% endif %} class="post-title" itemprop="name headline">{#
           #}{# Link posts #}{#
           #}{% if post.link %}
               {% if post.sticky > 0 %}
@@ -245,10 +239,7 @@
       </header>
     {% endif %}
 
-    {#################}
-    {### POST BODY ###}
-    {#################}
-    <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if post.direction && post.direction.toLowerCase() === 'rtl' %} rtl{% endif %}" itemprop="articleBody">
+    <div class="post-body{% if theme.han %} han-init-context{% endif %}" itemprop="articleBody">
 
       {# Gallery support #}
       {% if post.photos and post.photos.length %}
@@ -310,27 +301,24 @@
         {{ post.content }}
       {% endif  %}
     </div>
-    {#####################}
-    {### END POST BODY ###}
-    {#####################}
 
-    {% if theme.wechat_subscriber.enabled and not is_index %}
-      <div>
+    <div>
+      {% if not is_index %}
         {% include 'wechat-subscriber.swig' %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
 
-    {% if (theme.alipay or theme.wechatpay or theme.bitcoin) and not is_index %}
-      <div>
+    <div>
+      {% if not is_index %}
         {% include 'reward.swig' %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
 
-    {% if theme.post_copyright.enable and not is_index %}
-      <div>
+    <div>
+      {% if not is_index %}
         {% include 'post-copyright.swig' with { post: post } %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
 
     <footer class="post-footer">
       {% if post.tags and post.tags.length and not is_index %}
@@ -396,10 +384,6 @@
         <div class="post-eof"></div>
       {% endif %}
     </footer>
-  </div>
-  {######################}
-  {### END POST BLOCK ###}
-  {######################}
   </article>
 
 {% endmacro %}
